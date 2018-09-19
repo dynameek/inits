@@ -1,0 +1,28 @@
+/*
+ *
+ *
+*/
+span[class~='icon']
+{
+    display: inline-block;
+    background: #aaa;
+    width: 20px;
+    height: 20px;
+}
+span[class~='edit']
+{
+    background: url('../images/edit.png');
+}
+span[class~='view']
+{
+    background: url('../images/view.png');
+}
+span[class~='date']
+{
+    background: url('../images/clock.png');
+}
+span[class~='remove']
+{
+    background: url('../images/delete.png');
+    background-size: 100% 100%;   
+}
