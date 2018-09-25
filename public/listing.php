@@ -1,30 +1,7 @@
 <?php
     #
     require_once '../app/init.php';
-    
-    if(isset($_GET['id']))
-    {
-        #   Get Listing Id
-        $l_id = $_GET['id'];
-        
-        #   Create objects
-        $db = new Database;
-        $db->selectDb('inits');
-        
-        #
-        $listing = new Listing($l_id, $db->getConn());
-        
-        #   Perform operations
-        if($listing->fetchBasicInfo() && $listing->fetchContactInfo())
-        {
-            $basicInfo = $listing->getBasicInfo();
-            $contactInfo = $listing->getContactInfo();
-        }   
-        else header('location: ./');
-    }else
-    {
-        header('location: ./');
-    }
+    require_once '../app/processes/load-listing-public.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -32,8 +9,8 @@
         <title>INITS:</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <?php
-            Asset::loadStyles(['general', 'layout', 'header','colors', 'forms', 'links', 'site-specific']);
-            Asset::loadJavaScripts(['system', 'search']);
+            Asset::loadStyles(['general', 'layout', 'header','colors', 'forms', 'links', 'spans', 'site-specific']);
+            Asset::loadJavaScripts(['system', 'search', 'Listing']);
         ?>
         
         <style>
@@ -60,7 +37,8 @@
             .listing-header{
                 height: 250px;
                 
-                background: #C991BF;
+                background: url(<?php echo "'".$headerImage."'"?>);
+                background-position: center;
             }
             .listing-info-wrap, .listing-contact-wrap{
                 min-height: 80px;
@@ -71,15 +49,30 @@
                 
                 background: #fff;
             }
+            .listing-stat
+            {
+                border-bottom: 1px solid #ddd;
+                margin: 5px 0;
+                padding-bottom: 5px;
+            }
             .listing-contact-wrap{
                 border: 1px solid #ddd;
                 margin-top: 20px;
             }
+            .listing-contact-wrap > div {
+                margin-bottom: 10px;
+            }
+            .listing-contact-wrap > div:last-child {
+                margin-bottom: 0px;
+            }
             .listing-image-wrap{
-                height: 250px;
+                height: auto;
                 margin: 25px 0;
                 
+                overflow-x: scroll;
+                
                 background: #fff;
+                
             }
         </style>
     </head>
@@ -94,20 +87,28 @@
                     </div>
                     <div class="listing-info-wrap">
                         <h3><?=$basicInfo['name'] ?></h3>
-                        <div>
-                            <span id="view"></span><?=$basicInfo['views'] ?>
-                            <span id="date"></span><?=date('j M, Y',$basicInfo['date_created']) ?>
+                        <div class="listing-stat">
+                            <span class="icon view"></span><?=$basicInfo['views'] ?>
+                            <span class="icon date"></span><?=date('j M, Y',$basicInfo['date_created']) ?>
                         </div>
                         <p><?=$basicInfo['description'] ?></p>
                     </div>
                     <div class="listing-contact-wrap">
+                        <div>
+                            <span class="icon icon-lg email"></span><?=$contactInfo['email'] ?>
+                        </div>
+                        <div>
+                            <span class="icon icon-lg location"></span><?=$contactInfo['address'] ?>
+                        </div>
+                        <div>
+                            <span class="icon icon-lg uri"></span><?=$contactInfo['website'] ?>
+                        </div>
+                        <div>
+                            <span class="icon icon-lg phone"></span><?=$contactInfo['phone_1'] .", ".$contactInfo['phone_2'] ?>
+                        </div>
                         
-                        <span id="email"></span><?=$contactInfo['email'] ?>
-                        <span id="address"></span><?=$contactInfo['address'] ?>
-                        <span id="website"></span><?=$contactInfo['website'] ?>
-                        <span id="phone"></span><?=$contactInfo['phone_1'] .", ".$contactInfo['phone_2'] ?>
                     </div>
-                    <div class="listing-image-wrap">
+                    <div class="listing-image-wrap row-flex" id='listing-image-wrap'>
                         
                     </div>
                 </section>

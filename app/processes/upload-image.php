@@ -8,7 +8,8 @@
         $imageFile = $_FILES['new_image'];
         
         #   Get the image type
-        $imageType = trim((explode('/', $imageFile['type']))[1]);
+        $imageType = explode('/', $imageFile['type']);
+        $imageType = trim($imageType[1]);
         
         #   Check file type
         if(!preg_match('(jpeg|png)', $imageType))
@@ -22,8 +23,8 @@
         else{
             #   It is of the allowed MIME extension
             $imagePath = $_SERVER['DOCUMENT_ROOT']."/inits/app/assets/images/uploaded/";
-            $permanentImageName = $imagePath.$listingName.rand(0, 99).".".$imageType;
-            if(move_uploaded_file($imageFile['tmp_name'], $permanentImageName))
+            $permanentImageName = $listingName.rand(0, 99).".".$imageType;
+            if(move_uploaded_file($imageFile['tmp_name'], $imagePath.$permanentImageName))
             {
                 #   Create Objects
                 $listing->insertImage($permanentImageName);

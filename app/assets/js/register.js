@@ -37,6 +37,7 @@ window.addEventListener('load', function(){
                if(request.readyState === 4)
                {
                     /*  Get response */
+                    console.log(request.responseText);
                     let response = JSON.parse(request.responseText);
                     if(response.isSuccessful)
                     {

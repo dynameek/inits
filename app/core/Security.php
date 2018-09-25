@@ -10,7 +10,7 @@
         private const tokenIdentifier = 'csrf_token';   #   Name by which tokens are saved in session variable
         
         /*  Generates a hashed random token */
-        private function generateCSRFToken()
+        static function generateCSRFToken()
         {
             #   Generate Token
             return hash('sha256', rand(0, time()).random_bytes(15).time());
@@ -18,7 +18,7 @@
         }
         
         /*  */
-        public function ensureLogIn($sess_marker)
+        static function ensureLogIn($sess_marker)
         {
             if(!isset($_SESSION[$sess_marker])) header('location: ./');
         }
@@ -29,7 +29,7 @@
          *
          *  It has no return value
         */
-        private function setCSRFSessionToken($token)
+        static function setCSRFSessionToken($token)
         {
             #   Set token to  a session variable
             $_SESSION[self::tokenIdentifier] = $token;
@@ -42,7 +42,7 @@
          *
          *  It is to be used only in POST, PUT and DELETE forms
         */
-        public function protectForm()
+        static function protectForm()
         {
             $token = self::generateCSRFToken();
             self::setCSRFSessionToken($token);
@@ -57,7 +57,7 @@
          *
          * it returns true, if they are identical and false otherwise
         */
-        public function verifyToken($token)
+        static function verifyToken($token)
         {
             $retVal = false;
             if($_SESSION[self::tokenIdentifier] === $token)

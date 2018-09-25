@@ -2,6 +2,37 @@
  *
  *
 */
+
+var Listing = {
+	parentId : 'listing-image-wrapper',
+	msgBox: 'form-message',
+	
+	removeImage: function(element, imageId, listingId)
+	{
+		parentElement = document.getElementById(Listing.parentId);
+		parentElement.removeChild(element.parentNode);
+		
+		let reqBody = "id="+imageId+"&listing="+listingId;
+		let request = System.createAjaxObject();
+		
+		request.open('post', '../app/processes/remove-listing-image.php');
+		request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		request.send(reqBody);
+		
+		request.onreadystatechange = function(){
+			if(request.readyState === 4)
+			{
+				console.log(request.responseText);
+				let response = JSON.parse(request.responseText);
+				if(response.isSuccessful)
+				{
+					System.displayFormMessage(Listing.msgBox, response.message, 1);
+				}else System.displayFormMessage(Listing.msgBox, response.massage, 3);
+			}else System.displayFormMessage(Listing.msgBox, 'Processing...', 2);
+		};
+	}
+};
+
 window.addEventListener('load', function(){
 	/*	Get Buttons	*/
 	var basicBtn = document.getElementById('basic');
@@ -17,7 +48,7 @@ window.addEventListener('load', function(){
 	/*	Check if error message is set	*/
 	if(localStorage.getItem('image-err') && localStorage.getItem('image-code'))
 	{
-		System.displayFormMessage(msgBox, localStorage.getItem('image-err'), localStorage.getItem('image-code'));
+		System.displayFormMessage(msgBox, localStorage.getItem('image-err'), parseInt(localStorage.getItem('image-code')));
 		localStorage.removeItem('image-err');
 		localStorage.removeItem('image-code');
 	}

@@ -4,7 +4,7 @@
     {
         /*  */
         private $conn;
-        private const step = 15;
+        const step = 15;
         private $page;
         private $indexes = [];
         private $results = [];

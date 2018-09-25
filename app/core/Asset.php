@@ -13,10 +13,10 @@
     */
     class Asset
     {
-        private const imageBasePath = '../app/assets/images/';   #   Base URI for images
-        private const styleBasePath = '../app/assets/css/';      #   Base URI for stylesheets
-        private const scriptBasePath = '../app/assets/js/';      #   Base uri for Javascript
-        private const viewElementPath = '../app/assets/viewElements/';      #   Base uri for viewElement
+        const imageBasePath = '../app/assets/images/';   #   Base URI for images
+        const styleBasePath = '../app/assets/css/';      #   Base URI for stylesheets
+        const scriptBasePath = '../app/assets/js/';      #   Base uri for Javascript
+        const viewElementPath = '../app/assets/viewElements/';      #   Base uri for viewElement
         
         /*
          *  This loads a HTML img element for the supplied image name
@@ -27,7 +27,7 @@
          *
          *  It returns a HTML img element
         */
-        public function loadImage($image, $alt = '', $classes = [])
+        static function loadImage($image, $alt = '', $classes = [])
         {
             $class_str = '';
             foreach($classes as $class)
@@ -46,7 +46,7 @@
          *
          *  it returns no value
         */
-        public function loadStyles($stylesheets = [])
+        static function loadStyles($stylesheets = [])
         {
             foreach($stylesheets as $stylesheet)
             {
@@ -64,7 +64,7 @@
          *
          *  it returns no value
         */
-        public function loadJavaScripts($scripts = [])
+        static function loadJavaScripts($scripts = [])
         {
             foreach($scripts as $script)
             {
@@ -78,7 +78,7 @@
         /*
 
         */
-        public function loadViewElement($name)
+        static function loadViewElement($name)
         {
             if(file_exists(self::viewElementPath.$name.".php"))
                 require_once self::viewElementPath.$name.".php";

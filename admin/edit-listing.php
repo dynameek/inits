@@ -65,16 +65,20 @@
                         <h3 class="form-title">Images</h3>
                         
                         <form name="listing_image" action="" method="post" enctype="multipart/form-data">
-                            <div class="listing-images">
-                                <div>
-                                    <div class="listing-image">
-                                        
-                                    </div>
-                                    <span class="icon remove right" id="remove"></span>
-                                </div>
+                            <div class="listing-images" id="listing-image-wrapper">
                                 <?php
-                                
-                                    print_r($images);
+                                    foreach($images as $id => $image)
+                                    {
+                                        $path = '../app/assets/images/uploaded/';
+                                        echo '
+                                                <div>
+                                                    <div class="listing-image">
+                                                        <img src="'.$path.$image.'">
+                                                    </div>
+                                                    <span class="icon remove right" onclick ="Listing.removeImage(this, \''.$id.'\', \''.$listingId.'\');"></span>
+                                                </div>
+                                        ';
+                                    }
                                 ?>
                             </div>
                             <input type="file" name="new_image">

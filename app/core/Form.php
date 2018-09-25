@@ -12,7 +12,7 @@
          *  Hash Passwords
          *  It returns a hashed password
         */
-        protected function hashPassword($password)
+        static function hashPassword($password)
         {
             return password_hash($password, PASSWORD_DEFAULT, ['cost' => 20]);
         }
@@ -25,7 +25,7 @@
          *
          *  It returns true, if they match and false otherwise
         */
-        protected function doPasswordsMatch($hash, $password)
+        static function doPasswordsMatch($hash, $password)
         {
             $retVal = false;
             if(password_verify($password, $hash)) $retVal = true;
@@ -43,7 +43,7 @@
          *  it returns true, if password is long enough and false otherwise
          *
         */
-        protected function isLongEnough($var, $min_length)
+        static function isLongEnough($var, $min_length)
         {
             $retVal = false;
             if(strlen($var) >= $min_length) $retVal = true;
@@ -60,7 +60,7 @@
          *  Returns true, if all elements are not empty, false otherwise.
          *
         */
-        public function checkEmptiness($mixed = [])
+        static function checkEmptiness($mixed = [])
         {
             $retVal = true;
             foreach($mixed as $value)
@@ -82,7 +82,7 @@
          *
          *  It returns true, if email is valid and false otherwise
         */
-        public function isEmailValid($email)
+        static function isEmailValid($email)
         {
             $retVal = false;
             $unwantedCharPattern = "/[^\w\@\.]/";                               #   Any character(s) other than this is unwanted

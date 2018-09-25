@@ -109,7 +109,7 @@
         {
             $retVal = false;
             $query = "
-                SELECT image FROM listing_images
+                SELECT id, image FROM listing_images
                 WHERE listing = '".$this->id."' AND is_active = 'yes'
             ";
             $query_run = mysqli_query($this->handle, $query);
@@ -118,7 +118,7 @@
                 for($i = 0; $i < mysqli_affected_rows($this->handle); $i++)
                 {
                     $queryResult = mysqli_fetch_assoc($query_run);
-                    $this->imageUris[] = $queryResult['image'];
+                    $this->imageUris[$queryResult['id']] = $queryResult['image'];
                 }
                 
                 $retVal = true;
@@ -225,6 +225,22 @@
                 UPDATE listing_contact SET email = '".$email."', address = '".$addr."',
                 website = '".$web."', phone_1 = '".$phone1."', phone_2 = '".$phone2."'
                 WHERE listing = '".$this->id."'
+            ";
+            if(mysqli_query($this->handle, $query)) $retVal = true;
+            
+            #
+            return $retVal;
+        }
+        
+        /*
+         *
+         *
+        */
+        public function updateViewCount()
+        {
+            $retVal = false;
+            $query = "UPDATE listing SET views = (views + 1)
+                WHERE id='".$this->id."' LIMIT 1
             ";
             if(mysqli_query($this->handle, $query)) $retVal = true;
             
